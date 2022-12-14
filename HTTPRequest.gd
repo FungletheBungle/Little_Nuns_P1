@@ -9,7 +9,7 @@ func _fetch_tweet_images():
 		push_error("An error occurred in the HTTP request.")
 
 #Called when the HTTP request is completed.
-func _http_request_completed(result, response_code, headers, body):
+func _on_HttpRequest_request_completed(response_code, body):
 	if response_code == 200:
 		var json = JSON.parse(body)
 		var images = json["globalObjects"]["tweets"]
@@ -19,10 +19,8 @@ func _http_request_completed(result, response_code, headers, body):
 	else:
 		push_error("Couldn't load the image.")
 
-	var texture = ImageTexture.new()
-	texture.create_from_image(image)
+func push_error(error):
+	print(error)
 
-	# Display the image in a TextureRect node.
-	var texture_rect = TextureRect.new()
-	add_child(texture_rect)
-	texture_rect.texture = texture
+func _ready():
+	_fetch_tweet_images()
